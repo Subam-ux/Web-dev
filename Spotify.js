@@ -20,6 +20,9 @@ cards.forEach((card) => {
     if (ctr_panel.style.display === "none" || ctr_panel.style.display === "") {
       ctr_panel.style.display = "flex";
     }
+    let img = card.querySelector("img")
+    let Pimg =document.querySelector(".player-img img")
+    Pimg.src = img.src
     let song_path = card.dataset.song;
     aud.src = song_path;
     aud.play();

@@ -410,12 +410,12 @@ p {
   width: 35px;
   height: 35px;
 }
-.songs img {
+.player-img img {
   width: 90px;
   height: 90px;
   border-radius: 10px;
 }
-.songs {
+.player-img {
   display: flex;
   justify-content: flex-start;
   align-items: center;
