@@ -312,8 +312,8 @@ p {
   border-color: transparent;
   color: white;
 }
-.song-card h2{
-  max-width: 150px;   /* match your card width */
+.song-card h2 {
+  max-width: 150px; /* match your card width */
   white-space: normal;
   overflow-wrap: break-word;
   text-align: center;
@@ -338,13 +338,12 @@ p {
 }
 .song-card svg {
   position: absolute;
-  right: 15px;
-  bottom: 35%;
+  right: 17px;
+  bottom: 42%;
   opacity: 0;
   fill: rgb(7, 7, 7);
   transition: opacity 0.2s ease;
-  width: 25px;
-  height: 25px;
+  width: 45px;
   padding: 5px;
   height: fit-content;
   background-color: #1db954;
@@ -426,11 +425,6 @@ p {
   align-items: center;
   justify-content: center;
 }
-.play.media.is-active {
-    background: transparent;
-    border-color: #1db954;
-    box-shadow: none;
-}
 
 @media (max-width: 1786px) {
   .left {
@@ -485,9 +479,7 @@ p {
     width: 20px;
     height: 20px;
   }
-  .searchbar-container {
-    display: none;
-  }
+
   .searchicon {
     padding: 11px;
     margin: 0;
@@ -504,16 +496,23 @@ p {
   }
 }
 @media (max-width: 532px) {
+  .song-card svg {
+    opacity: 0;
+    bottom: 30%;
+    right: 30px;
+  }
   .right {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
   }
-  .playlist{
+  .playlist {
     justify-content: center;
   }
-
+  .searchbar-container {
+    width: 200px;
+  }
   .song-card {
     width: 90%; /* Smaller width for mobile */
     height: 90%; /* Adjusted height */
@@ -522,7 +521,56 @@ p {
   .song-card img {
     width: 90%;
   }
-  .links{
+  .links {
+    display: none;
+  }
+}
+@media (max-width: 1230px) {
+  .navbar {
+    position: relative;
+  }
+  .lin {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .lin-btn {
+    border: 2px solid snow;
+    padding: 10px;
+    width: 100%;
+  }
+  .vertical-line {
+    display: none;
+  }
+  .links {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 20px;
+    padding-top: 10px;
+    width: fit-content;
+    padding: 10px;
+    flex-direction: column;
+    background-color: #121212;
+    position: fixed;
+    right: -100%;
+    top: 68px;
+    z-index: 10000;
+    height: 100%;
+    border: 2px solid #f6f6f6;
+  }
+  .links.active{
+    right: 0;
+  }  
+  .hamburger {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 1;
+  }
+  .home {
     display: none;
   }
 }

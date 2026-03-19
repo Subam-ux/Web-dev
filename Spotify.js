@@ -1,6 +1,9 @@
 let btn = document.querySelector(".play");
 let play = document.querySelector("#play-group");
 let pause = document.querySelector("#pause-group");
+let cards = document.querySelectorAll(".song-card");
+let aud = document.getElementById("song");
+let ctr_panel = document.querySelector(".controls");
 btn.addEventListener("click", () => {
   if (aud.paused) {
     aud.play();
@@ -12,9 +15,7 @@ btn.addEventListener("click", () => {
     play.style.display = "block";
   }
 });
-let cards = document.querySelectorAll(".song-card");
-let aud = document.getElementById("song");
-let ctr_panel = document.querySelector(".controls");
+
 cards.forEach((card) => {
   card.addEventListener("click", () => {
     if (ctr_panel.style.display === "none" || ctr_panel.style.display === "") {
@@ -34,3 +35,7 @@ aud.addEventListener("ended", () => {
   pause.style.display = "none";
   play.style.display = "block";
 });
+document.querySelector(".hamburger").addEventListener("click",()=>{
+
+  document.querySelector(".links").classList.toggle("active")
+})
