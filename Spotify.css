@@ -395,10 +395,33 @@ p {
   justify-content: center;
   border-radius: 10px;
   height: 100px;
-  padding: 10px;
+  padding: 0;
   margin: 10px;
   width: 77.5%;
   display: none;
+}
+.controls .dropdown {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 20;
+}
+.drop {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 34px;
+  height: 34px;
+  margin: 0;
+  padding: 0;
+  cursor: pointer;
+}
+.drop svg {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 .media {
   background-color: transparent;
@@ -414,19 +437,56 @@ p {
   height: 90px;
   border-radius: 10px;
 }
+
+.playbar-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
 .player-img {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  flex: 2;
+  margin-top: 0;
+  margin: 0;
 }
 .playbar-btn {
   display: flex;
-  flex: 2;
-  align-items: center;
+  flex: 1;
   justify-content: center;
+  align-items: center;
+}
+.volume {
+  display: flex;
+  flex: 2;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+#seekbar {
+  position: absolute;
+  width: 71vw;
+  right: 17px;
+  bottom: 10px;
+}
+
+.drop {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  top: 0;
+  right: 0px;
+  color: white;
+  height: 40px;
+  margin: 0;
+  padding: 5px;
 }
 
 @media (max-width: 1786px) {
+  .volume {
+    display: none;
+  }
   .left {
     position: absolute;
     left: -100%;
@@ -473,8 +533,8 @@ p {
     border-radius: 10px;
     padding: 10px;
     gap: 10px;
-    display: none;
   }
+
   .media svg {
     width: 20px;
     height: 20px;
@@ -501,6 +561,10 @@ p {
     bottom: 30%;
     right: 30px;
   }
+
+  .mediaplayer.active {
+    transform: translateY(0); /* slide up animation */
+  }
   .right {
     display: flex;
     align-items: center;
@@ -524,8 +588,102 @@ p {
   .links {
     display: none;
   }
+  .controls {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+    display: none;
+    background: linear-gradient(to bottom, #1a1a1a, #121212, #000000);
+  }
+  .player-img {
+    height: 60%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .player-img img {
+    width: 300px;
+    height: 300px;
+  }
+  .con-centre {
+    position: relative;
+    width: 100%;
+    height: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  .volume {
+    display: none;
+  }
+  .seek {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+  }
+  #seekbar {
+    width: fit-content;
+    position: absolute;
+    width: 90vw;
+    top: 25px;
+    bottom: auto;
+    left: 14px;
+    right: 10px;
+  }
+  playbar-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: fit-content;
+  }
+  .media svg {
+    width: 50px;
+    height: 50px;
+  }
+  .controls.active {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-color: #1f1f1f;
+    width: fit-content;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+    border-radius: 10px;
+    padding: 0;
+    gap: 0;
+  }
+  .small svg {
+    width: 20px;
+    height: 20px;
+  }
+  .play_img img {
+    width: 90px;
+    height: 90px;
+    margin: 10PX;
+    border-radius: 10px;
+  }
+  .drop.active{
+    position:absolute;
+    right: 0;
+    top: 0;
+    width: 30px;
+    height: 30px;
+  }
 }
 @media (max-width: 1230px) {
+  .volume {
+    display: none;
+  }
   .navbar {
     position: relative;
   }
@@ -561,9 +719,9 @@ p {
     height: 100%;
     border: 2px solid #f6f6f6;
   }
-  .links.active{
+  .links.active {
     right: 0;
-  }  
+  }
   .hamburger {
     display: flex;
     align-items: center;
@@ -573,4 +731,7 @@ p {
   .home {
     display: none;
   }
+}
+.hidden {
+  display: none;
 }
