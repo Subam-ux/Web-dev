@@ -1,137 +1,106 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.querySelector(".play");
-  const play = document.querySelector("#play-group");
-  const pause = document.querySelector("#pause-group");
-  const cards = document.querySelectorAll(".song-card");
-  const aud = document.getElementById("song");
-  const ctrPanel = document.querySelector(".controls");
-  const playerImg = document.querySelector(".player-img img");
-  const nextBtn = document.querySelector(".next");
-  const prevBtn = document.querySelector(".previous");
-  const hamburger = document.querySelector(".hamburger");
-  const links = document.querySelector(".links");
-  const seekbar = document.querySelector("#seekbar");
-  const volumeRange = document.querySelector("#volume-range");
-  const highVol = document.querySelector("#high-vol");
-  const lowVol = document.querySelector("#low-vol");
-  const muteVol = document.querySelector("#mute-vol");
-  const volumeBtn = document.querySelector("#volumn-btn");
+let btn = document.querySelector(".play");
+let play = document.querySelector(".play-group");
+let pause = document.querySelector(".pause-group");
+let cards = document.querySelectorAll(".song-card");
+let aud = document.getElementById("song");
+let ctr_panel = document.querySelector(".controls");
+let songindex = 0;
+let NextCard;
+let mediaplayer = document.querySelector(".mediaplayer");
+let container = document.querySelector(".container");
+let controls = document.querySelector(".controls");
 
-  if (!aud || !btn || !play || !pause || cards.length === 0) {
-    return;
+function playsong(index) {
+  let card = cards[index];
+  let img = card.querySelector("img");
+  let Pimg = document.querySelector(".player-img img");
+  Pimg.src = img.src;
+  let song_path = card.dataset.song;
+  aud.src = song_path;
+  aud.addEventListener('canplay', () => {
+    aud.play().catch(error => {
+      console.error("Playback failed:", error);
+    });
+  }, { once: true });
+  controlUi(true);
+}
+let controlUi = (isplaying) => {
+  if (isplaying) {
+    pause.style.display = "block";
+    play.style.display = "none";
+  } else {
+    pause.style.display = "none";
+    play.style.display = "block";
   }
+};
 
-  let songIndex = 0;
-
-  const updateControlUi = (isPlaying) => {
-    pause.style.display = isPlaying ? "block" : "none";
-    play.style.display = isPlaying ? "none" : "block";
-  };
-
-  const updatePlayerImage = (card) => {
-    if (!card || !playerImg) return;
-    const img = card.querySelector("img");
-    if (img) {
-      playerImg.src = img.src;
-      playerImg.alt = img.alt || "Current song cover";
-    }
-  };
-
-  const loadAndPlaySong = (index) => {
-    if (cards.length === 0) return;
-    songIndex = (index + cards.length) % cards.length;
-    const card = cards[songIndex];
-    const songPath = card.dataset.song;
-
-    if (!songPath) return;
-
-    updatePlayerImage(card);
-    aud.src = songPath;
+btn.addEventListener("click", () => {
+  if (aud.paused) {
     aud.play();
-    updateControlUi(true);
-
-    if (ctrPanel) {
-      ctrPanel.style.display = "flex";
-    }
-  };
-
-  btn.addEventListener("click", () => {
-    if (aud.paused) {
-      aud.play();
-      updateControlUi(true);
-    } else {
-      aud.pause();
-      updateControlUi(false);
-    }
-  });
-
-  cards.forEach((card, index) => {
-    card.addEventListener("click", () => {
-      loadAndPlaySong(index);
-    });
-  });
-
-  aud.addEventListener("ended", () => {
-    loadAndPlaySong(songIndex + 1);
-  });
-
-  if (nextBtn) {
-    nextBtn.addEventListener("click", () => {
-      loadAndPlaySong(songIndex + 1);
-    });
-  }
-
-  if (prevBtn) {
-    prevBtn.addEventListener("click", () => {
-      loadAndPlaySong(songIndex - 1);
-    });
-  }
-
-  if (hamburger && links) {
-    hamburger.addEventListener("click", () => {
-      links.classList.toggle("active");
-    });
-  }
-
-  if (seekbar) {
-    aud.addEventListener("timeupdate", () => {
-      if (!Number.isNaN(aud.duration) && aud.duration > 0) {
-        seekbar.value = (aud.currentTime / aud.duration) * 100;
-      }
-    });
-
-    seekbar.addEventListener("input", () => {
-      if (!Number.isNaN(aud.duration) && aud.duration > 0) {
-        aud.currentTime = (seekbar.value / 100) * aud.duration;
-      }
-    });
-  }
-
-  const updateVolumeIcons = () => {
-    if (!highVol || !lowVol || !muteVol) return;
-    const volume = aud.muted ? 0 : aud.volume;
-    highVol.style.display = volume > 0.5 ? "block" : "none";
-    lowVol.style.display = volume > 0 && volume <= 0.5 ? "block" : "none";
-    muteVol.style.display = volume === 0 ? "block" : "none";
-  };
-
-  if (volumeRange) {
-    aud.volume = Number(volumeRange.value) / 100;
-    updateVolumeIcons();
-
-    volumeRange.addEventListener("input", () => {
-      const nextVolume = Number(volumeRange.value) / 100;
-      aud.muted = false;
-      aud.volume = nextVolume;
-      updateVolumeIcons();
-    });
-  }
-
-  if (volumeBtn) {
-    volumeBtn.addEventListener("click", (event) => {
-      if (event.target === volumeRange) return;
-      aud.muted = !aud.muted;
-      updateVolumeIcons();
-    });
+    controlUi(true);
+  } else {
+    aud.pause();
+    controlUi(false);
   }
 });
+
+cards.forEach((card, index) => {
+  card.addEventListener("click", () => {
+    ctr_panel.style.display = "flex";
+    songindex = index;
+    playsong(songindex);
+  });
+});
+aud.addEventListener("ended", () => {
+  songindex++;
+  if (songindex >= cards.length) {
+    songindex = 0;
+  }
+  NextCard = cards[songindex];
+  playsong(songindex);
+});
+document.querySelector(".hamburger").addEventListener("click", () => {
+  document.querySelector(".links").classList.toggle("active");
+});
+let aud_range = document.querySelector("#seekbar");
+aud.addEventListener("timeupdate", () => {
+  if (!isNaN(aud.duration)) {
+    let progress = (aud.currentTime / aud.duration) * 100;
+    aud_range.value = progress;
+  }
+});
+aud_range.addEventListener("input", () => {
+  let seekTime = (aud_range.value / 100) * aud.duration;
+  aud.currentTime = seekTime;
+});
+let nextBtn = document.querySelector(".next");
+let prevBtn = document.querySelector(".previous");
+nextBtn.addEventListener("click", () => {
+  songindex++;
+  if (songindex >= cards.length) {
+    songindex = 0;
+  }
+    NextCard = cards[songindex];
+   playsong(songindex);
+  
+});
+prevBtn.addEventListener("click", () => {
+  songindex--;
+  if (songindex < 0) {
+    songindex = cards.length - 1;
+  }
+    NextCard = cards[songindex];
+    playsong(songindex);
+
+});
+let drop = document.querySelector(".drop");
+let media = document.querySelectorAll(".media");
+let player_img = document.querySelector(".player-img");
+drop.addEventListener("click", () => {
+  controls.classList.toggle("active");
+  drop.classList.toggle("active");
+  media.forEach(el => el.classList.toggle("small"));
+  player_img.classList.toggle("play_img");
+  aud_range.classList.toggle("hidden");
+});
+
